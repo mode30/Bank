@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -55,7 +56,7 @@ func match(promptValue int){
 		checkAmount("Available amount:")
 		// fmt.Print("1")
 		case 2:
-		amount,err:=depositAmount("enter amount to deposit:")
+		amount,_,err:=depositAmount("enter amount to deposit:")
 		if err !=nil{
 			log.Fatal(err)
 		}
@@ -97,7 +98,7 @@ func checkAmount(prompt string){
 }
 
 
-func depositAmount(prompt string)(amount float64,err error){
+func depositAmount(prompt string)(amount float64,condition bool,err error){
 	fmt.Println(prompt)
 	fmt.Print("")
 	buffer:=bufio.NewReader(os.Stdin)
@@ -110,8 +111,15 @@ func depositAmount(prompt string)(amount float64,err error){
 	if err !=nil{
 		log.Fatal(err)
 	}
+	// negNUmber:=math.Inf(0)
+	negNumber:=0
+	if amountDeposited <= float64(negNumber){
+		fmt.Print("enter valud number greater than 0")
+		return float64(negNumber),false,nil
+
+	}
 	fmt.Printf("amount deposited:%f",amountDeposited)
 	totalAmount+=amountDeposited
 
-	return totalAmount,nil
+	return totalAmount,true,nil
 }
