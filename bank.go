@@ -12,12 +12,15 @@ import (
 var totalAmount float64=1_000_000
 func main() {
 
-	prompt,err := userPrompt("welcome to the bank:")
-	if err !=nil{
-		log.Fatal(err)
+	for{
+
+		prompt,err := userPrompt("welcome to the bank:")
+		if err !=nil{
+			log.Fatal(err)
+		}
+		fmt.Println("input:", prompt)
+		match(prompt)
 	}
-	fmt.Println("input:", prompt)
-	match(prompt)
 }
 
 func userPrompt(prompt string) (promptValue int,err error) {
@@ -61,11 +64,11 @@ func match(promptValue int){
 		case 3:
 		amount:=withdrawAmount("enter amount to withdraw:")
 		fmt.Print(amount)
-		// case 4:
-		// fmt.Print("program ended:")
-		// break
+		case 4:
+		fmt.Print("program exited:")
+		os.Exit(0)
 		default:
-		fmt.Print("Program ended")
+		fmt.Print("Program ended abruptly")
 	}
 
 }
