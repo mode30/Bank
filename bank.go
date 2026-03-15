@@ -8,10 +8,14 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"example.comm/bank/fileOperations"
 )
 
-var totalAmount float64=1_000_000
+var totalAmount float64=1000000
+
+const fileName="balance.txt"
 func main() {
+
 
 	for{
 
@@ -25,49 +29,8 @@ func main() {
 		fmt.Println("")
 	}
 }
-func writeBalanceToFile(balance float64){
-	balanceText:=fmt.Sprint(balance)
-	os.WriteFile("fileName",  []byte(balanceText), 0644)
-}
-
-func readDataFile()(bankAccount float64){
-	value,err:=os.ReadFile(fileName)
-	if err !=nil{
-		log.Fatal(err)
-	}
-	balanceTxt:=string(value)
-	balance,err:=strconv.ParseFloat(balanceTxt, 64)
-	if err !=nil{
-		log.Fatal(err)
-	}
-	fmt.Printf("initial bank account:%0.2f", balance)
-	return balance
-}
 
 
-func userPrompt(prompt string) (promptValue int,err error) {
-	// fmt.Print("welcome to the bank")
-	fmt.Print(prompt)
-	fmt.Println("what do you want to do:")
-	fmt.Println("1.check balance:")
-	fmt.Println("2.deposit money:")
-	fmt.Println("3.withdraw money:")
-	fmt.Println("4.exit:")
-	fmt.Print("your chioce:")
-	buffer := bufio.NewReader(os.Stdin)
-	bufferString, err := buffer.ReadString('\n')
-	if err != nil {
-		log.Fatal(err)
-	}
-	input := strings.TrimSpace(bufferString)
-	userInput, err := strconv.Atoi(input)
-	if err != nil {
-		log.Fatal(err)
-
-	}
-	return userInput,nil
-
-}
 
 func match(promptValue int){
 	switch promptValue{
@@ -115,6 +78,7 @@ func withdrawAmount(prompt string)(amount float64,condition bool){
 	}
 
 	totalAmount=remainingAmount
+	fileOperations.WriteBalanceToFile(fileName)
 	return totalAmount,true
 
 	// fmt.Println("remaining Amount:",remainingAmount)
@@ -147,8 +111,9 @@ func depositAmount(prompt string)(amount float64,condition bool,err error){
 		return float64(negNumber),false,nil
 
 	}
-	fmt.Printf("amount deposited:%f",amountDeposited)
+	fmt.Printf("amount deposited:%f\n",amountDeposited)
 	totalAmount+=amountDeposited
+	writeBalanceToFile(fileName)
 
 	return totalAmount,true,nil
 }
