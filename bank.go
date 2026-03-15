@@ -79,15 +79,21 @@ func withdrawAmount(prompt string)float64{
 	fmt.Scan(&withdrawAmount)
 	fmt.Print("total amount:",totalAmount)
 	remainingAmount:=totalAmount-withdrawAmount
+	if remainingAmount < totalAmount{
+		fmt.Println("Please enter valid amount,amount in account too low to withdraw")
+		os.Exit(0)//ends the program abruptly
+	}else{
+
 	totalAmount=remainingAmount
 	return totalAmount
+	}
 	// fmt.Println("remaining Amount:",remainingAmount)
 }
 
 
 func checkAmount(prompt string){
 	fmt.Print(prompt)
-	fmt.Println("bank amount:",totalAmount)
+	fmt.Printf("bank amount: %0.2f",totalAmount)
 }
 
 
@@ -104,6 +110,8 @@ func depositAmount(prompt string)(amount float64,err error){
 	if err !=nil{
 		log.Fatal(err)
 	}
+	fmt.Printf("amount deposited:%f",amountDeposited)
+	totalAmount+=amountDeposited
 
-	return amountDeposited,nil
+	return totalAmount,nil
 }
