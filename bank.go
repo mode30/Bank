@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"log"
-	"math"
+	// "math"
 	"os"
 	"strconv"
 	"strings"
@@ -63,7 +63,7 @@ func match(promptValue int){
 		fmt.Println("amount deposited:",amount)
 		fmt.Print("2")
 		case 3:
-		amount:=withdrawAmount("enter amount to withdraw:")
+		amount,_:=withdrawAmount("enter amount to withdraw:")
 		fmt.Print(amount)
 		case 4:
 		fmt.Print("program exited:")
@@ -74,7 +74,9 @@ func match(promptValue int){
 
 }
 
-func withdrawAmount(prompt string)float64{
+func withdrawAmount(prompt string)(amount float64,condition bool){
+	var state bool
+	state=true
 	var withdrawAmount float64
 	fmt.Print(prompt)
 	fmt.Scan(&withdrawAmount)
@@ -82,12 +84,18 @@ func withdrawAmount(prompt string)float64{
 	remainingAmount:=totalAmount-withdrawAmount
 	if remainingAmount < totalAmount{
 		fmt.Println("Please enter valid amount,amount in account too low to withdraw")
+		state=false
+	}
+	if !state{
+
 		os.Exit(0)//ends the program abruptly
-	}else{
+		return 0,false
+
+	}
 
 	totalAmount=remainingAmount
-	return totalAmount
-	}
+	return totalAmount,true
+
 	// fmt.Println("remaining Amount:",remainingAmount)
 }
 
