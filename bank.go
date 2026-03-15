@@ -21,8 +21,29 @@ func main() {
 		}
 		fmt.Println("input:", prompt)
 		match(prompt)
+
+		fmt.Println("")
 	}
 }
+func writeBalanceToFile(balance float64){
+	balanceText:=fmt.Sprint(balance)
+	os.WriteFile("fileName",  []byte(balanceText), 0644)
+}
+
+func readDataFile()(bankAccount float64){
+	value,err:=os.ReadFile(fileName)
+	if err !=nil{
+		log.Fatal(err)
+	}
+	balanceTxt:=string(value)
+	balance,err:=strconv.ParseFloat(balanceTxt, 64)
+	if err !=nil{
+		log.Fatal(err)
+	}
+	fmt.Printf("initial bank account:%0.2f", balance)
+	return balance
+}
+
 
 func userPrompt(prompt string) (promptValue int,err error) {
 	// fmt.Print("welcome to the bank")
